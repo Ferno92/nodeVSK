@@ -1,0 +1,135 @@
+$colorPrimary: #3F51B5;
+$colorPrimaryDark: #303F9F;
+$colorAccent: #FFC107;
+
+body {
+    // background-color: $colorAccent;
+}
+
+#gameContainer {
+    padding-bottom: 50px;
+
+    .site-title {
+        text-align: center;
+        font-size: 40px;
+        padding: 20px 0 50px;
+        color: $colorPrimary;
+    }
+
+    .game-wrapper {
+        padding-bottom: 20px;
+
+        .time {
+            padding-top: 20px;
+
+            &.first {
+                .time-label {
+                    color: $colorPrimaryDark;
+                }
+            }
+
+            .time-label {
+                color: $colorAccent;
+                font-size: 20px;
+            }
+        }
+
+        .set-score {
+            font-size: 30px;
+            padding-top: 20px;
+            color: $colorAccent;
+
+            &.first {
+                color: $colorPrimaryDark;
+                text-align: right;
+            }
+        }
+
+        .score,
+        .team-name {
+            text-align: center;
+        }
+
+        .team-name {
+            font-size: 30px;
+            padding-top: 20px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: $colorAccent;
+
+            &:first-child {
+                color: $colorPrimaryDark;
+            }
+        }
+
+        .score {
+            padding: 50px;
+            font-size: 60px;
+            color: $colorAccent;
+
+            &:first-child {
+                color: $colorPrimaryDark;
+                border-right: solid 1px black;
+            }
+        }
+
+        .results {
+            padding: 15px;
+
+            .results-title {
+                font-weight: bold;
+                font-size: 20px;
+                text-align: center;
+            }
+
+            .set-result {
+                font-size: 20px;
+            }
+        }
+    }
+
+    .lineup-wrapper {
+        padding: 60px 0;
+        border-top: solid 1px black;
+
+        .court {
+            margin-bottom: 20px;
+
+            .court-row {
+                border: solid 2px black;
+
+                td {
+                    font-size: 20px;
+                    text-align: center;
+                }
+
+                &.rows-team-a {
+                    color: $colorPrimaryDark;
+                }
+
+                &.rows-team-b {
+                    color: $colorAccent;
+                }
+            }
+        }
+    }
+
+    .maps-title {
+        text-align: center;
+        font-size: 20px;
+        margin-top: 40px;
+        margin-bottom: 20px;
+    }
+
+    #map {
+        height: 400px;
+    }
+}
+@media (min-width: 768px) {
+    #gameContainer {
+        .lineup-wrapper {
+            border-top: none;
+            border-left: solid 1px black;
+        }
+    }
+}
