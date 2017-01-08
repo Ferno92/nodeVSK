@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Volley ScoreKeeper - Streaming Game</title>
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- custom css -->
+    <link href="style.min.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+    <div id="gameContainer" class="container">
+
+        <div class="site-title col-xs-12">
+            Volley ScoreKeeper Streaming Game
+        </div>
+        <div class="game-wrapper col-sm-6">
+            <div class="row">
+                <div class="set-score first col-xs-6" data-bind="text: model.setScoreA"></div>
+                <div class="set-score col-xs-6" data-bind="text: model.setScoreB"></div>
+            </div>
+            <div class="row">
+                <div class="team-name col-xs-6" data-bind="text: model.nameA, attr:{title: model.nameA}"></div>
+                <div class="team-name col-xs-6" data-bind="text: model.nameB, attr:{title: model.nameB}"></div>
+            </div>
+            <div class="row">
+                <div class="score col-xs-6" data-bind="text: model.scoreA"></div>
+                <div class="score col-xs-6" data-bind="text: model.scoreB"></div>
+            </div>
+            <div class="set-results-wrapper">
+                <!-- ko foreach: model.setResults -->
+                <div class="row results">
+                    <div class="results-title col-xs-4" data-bind="text: 'SET ' + ($index() + 1) + ':'"></div>
+                    <div class="set-result col-xs-8" data-bind="text: $data !== null ? $data : ($index() == $root.model.currentSet() ? 'Current playing...' : 'Not played yet')"></div>
+                </div>
+
+                <!-- /ko -->
+            </div>
+        </div>
+        <div class="lineup-wrapper col-sm-6">
+            <table class="court col-sm-6 col-xs-10 col-sm-offset-3 col-xs-offset-1">
+                <tr class="back-row court-row rows-team-a">
+                    <td data-bind="text: model.lineUpA()[0]"></td>
+                    <td data-bind="text: model.lineUpA()[5]"></td>
+                    <td data-bind="text: model.lineUpA()[4]"></td>
+                </tr>
+                <tr class="front-row court-row rows-team-a">
+                    <td data-bind="text: model.lineUpA()[1]"></td>
+                    <td data-bind="text: model.lineUpA()[2]"></td>
+                    <td data-bind="text: model.lineUpA()[3]"></td>
+                </tr>
+                <tr class="front-row court-row rows-team-b">
+                    <td data-bind="text: model.lineUpB()[3]"></td>
+                    <td data-bind="text: model.lineUpB()[2]"></td>
+                    <td data-bind="text: model.lineUpB()[1]"></td>
+                </tr>
+                <tr class="back-row court-row rows-team-b">
+                    <td data-bind="text: model.lineUpB()[4]"></td>
+                    <td data-bind="text: model.lineUpB()[5]"></td>
+                    <td data-bind="text: model.lineUpB()[0]"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="scores-in-time">
+
+        </div>
+        <div class="col-xs-10 col-xs-offset-1 maps-title" data-bind="visible: model.positions().length !== 0">
+            The match is playing here:
+        </div>
+        <div id="map" class="col-xs-10 col-xs-offset-1" data-bind="visible: model.positions().length !== 0">
+
+        </div>
+    </div>
+
+    <script type='text/javascript' src='jquery-3.1.1.min.js'></script>
+    <script type='text/javascript' src='knockout-3.4.1.js'></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script type='text/javascript' src='custom.js'></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDOAgAZQ73BdR_f2fiMSELDs0oEw9DeQJ0">
+    </script>
+</body>
+
+</html>
