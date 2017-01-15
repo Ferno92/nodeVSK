@@ -18,66 +18,144 @@
 </head>
 
 <body>
+    <nav id="navbarWrapper" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+                <a href="#"><img class="vsk-logo" src="ic_launcher-web.png" /></a>
+
+                <a class="navbar-brand" href="#">Volley ScoreKeeper</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="#">Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Current playing games <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-header">Playing games</li>
+                            <!-- ko foreach: model.openGames -->
+                            <li>
+                                <a data-bind="text: nameA + ' vs ' + nameB + ' (game='+ id +')', attr:{href: 'http://localhost/?game=' + id }"></a>
+                            </li>
+                            <!-- /ko -->
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">Games Ended</li>
+                            <!-- ko foreach: model.endedGames -->
+                            <li>
+                                <a data-bind="text: nameA + ' vs ' + nameB + ' (' + setScoreA + ' - ' + setScoreB ')'"></a>
+                            </li>
+                            <!-- /ko -->
+                        </ul>
+                    </li>
+                </ul>
+                <!-- <ul class="nav navbar-nav navbar-right">
+                    <li><a href="../navbar/">Default</a></li>
+                    <li><a href="../navbar-static-top/">Static top</a></li>
+                    <li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li>
+                </ul> -->
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
     <div id="gameContainer" class="container">
+        <div id="gameFound" style="display: none;">
 
-        <div class="site-title col-xs-12">
-            Volley ScoreKeeper Streaming Game
-        </div>
-        <div class="game-wrapper col-sm-6">
-            <div class="row">
-                <div class="set-score first col-xs-6" data-bind="text: model.setScoreA"></div>
-                <div class="set-score col-xs-6" data-bind="text: model.setScoreB"></div>
+            <div class="site-title col-xs-12">
+                Volley ScoreKeeper Streaming Game
             </div>
-            <div class="row">
-                <div class="team-name col-xs-6" data-bind="text: model.nameA, attr:{title: model.nameA}"></div>
-                <div class="team-name col-xs-6" data-bind="text: model.nameB, attr:{title: model.nameB}"></div>
-            </div>
-            <div class="row">
-                <div class="score col-xs-6" data-bind="text: model.scoreA"></div>
-                <div class="score col-xs-6" data-bind="text: model.scoreB"></div>
-            </div>
-            <div class="set-results-wrapper">
-                <!-- ko foreach: model.setResults -->
-                <div class="row results">
-                    <div class="results-title col-xs-4" data-bind="text: 'SET ' + ($index() + 1) + ':'"></div>
-                    <div class="set-result col-xs-8" data-bind="text: $data !== null ? $data : ($index() == $root.model.currentSet() ? 'Current playing...' : 'Not played yet')"></div>
+            <div class="game-wrapper col-sm-6">
+                <div class="row">
+                    <div class="set-score first col-xs-6" data-bind="text: model.setScoreA"></div>
+                    <div class="set-score col-xs-6" data-bind="text: model.setScoreB"></div>
                 </div>
+                <div class="row">
+                    <div class="team-name col-xs-6" data-bind="text: model.nameA, attr:{title: model.nameA}"></div>
+                    <div class="team-name col-xs-6" data-bind="text: model.nameB, attr:{title: model.nameB}"></div>
+                </div>
+                <div class="row">
+                    <div class="score col-xs-6" data-bind="text: model.scoreA"></div>
+                    <div class="score col-xs-6" data-bind="text: model.scoreB"></div>
+                </div>
+                <div class="set-results-wrapper">
+                    <!-- ko foreach: model.setResults -->
+                    <div class="row results">
+                        <div class="results-title col-xs-4" data-bind="text: 'SET ' + ($index() + 1) + ':'"></div>
+                        <div class="set-result col-xs-8" data-bind="text: $data !== null ? $data : ($index() == $root.model.currentSet() ? 'Current playing...' : 'Not played yet')"></div>
+                    </div>
 
-                <!-- /ko -->
+                    <!-- /ko -->
+                </div>
+            </div>
+            <div class="lineup-wrapper col-sm-6">
+                <table class="court col-sm-6 col-xs-10 col-sm-offset-3 col-xs-offset-1">
+                    <tr class="back-row court-row rows-team-a">
+                        <td data-bind="text: model.lineUpA()[0]"></td>
+                        <td data-bind="text: model.lineUpA()[5]"></td>
+                        <td data-bind="text: model.lineUpA()[4]"></td>
+                    </tr>
+                    <tr class="front-row court-row rows-team-a">
+                        <td data-bind="text: model.lineUpA()[1]"></td>
+                        <td data-bind="text: model.lineUpA()[2]"></td>
+                        <td data-bind="text: model.lineUpA()[3]"></td>
+                    </tr>
+                    <tr class="front-row court-row rows-team-b">
+                        <td data-bind="text: model.lineUpB()[3]"></td>
+                        <td data-bind="text: model.lineUpB()[2]"></td>
+                        <td data-bind="text: model.lineUpB()[1]"></td>
+                    </tr>
+                    <tr class="back-row court-row rows-team-b">
+                        <td data-bind="text: model.lineUpB()[4]"></td>
+                        <td data-bind="text: model.lineUpB()[5]"></td>
+                        <td data-bind="text: model.lineUpB()[0]"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="scores-in-time">
+
+            </div>
+            <div class="col-xs-10 col-xs-offset-1 maps-title" data-bind="visible: model.positions().length !== 0">
+                The match is playing here:
+            </div>
+            <div id="map" class="col-xs-10 col-xs-offset-1" data-bind="visible: model.positions().length !== 0">
+
+            </div>
+
+        </div>
+        <div id="gameNotFound" style="display: none;">
+
+            <div class="site-title col-xs-12">
+                Volley ScoreKeeper Streaming Game
+            </div>
+            <h3>
+                The game is already finished or it doesn't exist.
+            </h3>
+            <div class="not-found-message"> Please visit our homepage for more detail and learn how to use the <a href="https://goo.gl/7sqn3V"><b>Volley ScoreKeeper</b></a> android app!
             </div>
         </div>
-        <div class="lineup-wrapper col-sm-6">
-            <table class="court col-sm-6 col-xs-10 col-sm-offset-3 col-xs-offset-1">
-                <tr class="back-row court-row rows-team-a">
-                    <td data-bind="text: model.lineUpA()[0]"></td>
-                    <td data-bind="text: model.lineUpA()[5]"></td>
-                    <td data-bind="text: model.lineUpA()[4]"></td>
-                </tr>
-                <tr class="front-row court-row rows-team-a">
-                    <td data-bind="text: model.lineUpA()[1]"></td>
-                    <td data-bind="text: model.lineUpA()[2]"></td>
-                    <td data-bind="text: model.lineUpA()[3]"></td>
-                </tr>
-                <tr class="front-row court-row rows-team-b">
-                    <td data-bind="text: model.lineUpB()[3]"></td>
-                    <td data-bind="text: model.lineUpB()[2]"></td>
-                    <td data-bind="text: model.lineUpB()[1]"></td>
-                </tr>
-                <tr class="back-row court-row rows-team-b">
-                    <td data-bind="text: model.lineUpB()[4]"></td>
-                    <td data-bind="text: model.lineUpB()[5]"></td>
-                    <td data-bind="text: model.lineUpB()[0]"></td>
-                </tr>
-            </table>
-        </div>
-        <div class="scores-in-time">
-
-        </div>
-        <div class="col-xs-10 col-xs-offset-1 maps-title" data-bind="visible: model.positions().length !== 0">
-            The match is playing here:
-        </div>
-        <div id="map" class="col-xs-10 col-xs-offset-1" data-bind="visible: model.positions().length !== 0">
-
+        <div id="homepage" style="display: none;">
+            <div class="site-title col-xs-12">
+                Homepage
+            </div>
+            <div class="site-description">
+                This site is complementary to Android VolleyScoreKeeper. It was thought to be able to see and follow in real time the volleyball matches that application users are watching.
+            </div>
+            <h2> What is Volley ScoreKeeper</h2>
+            <div class="site-description">
+                It is an Android application that allows you to keep track of volleyball matches you're watching.
+                <br/>In real time you can see the players, as they are placed, you can view the results of sets played, you can share the results of the match ended on social networks to show them to your friends or to people who follow your favorite
+                team.
+                <br/>You can also save your game just completed to look at the data later.
+                <br/>And finally you can broadcast the match live, while you're looking at, to allow even those at home to follow it step by step.
+            </div>
+            <h2> Some screenshots:</h2>
+            <h2> Download the app from the Play Store!</h2>
+            <a class="badge" href='https://play.google.com/store/apps/details?id=com.provehitoIA.ferno92.volleyscorekeeper&hl=it&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+                <img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' /></a>
         </div>
     </div>
 

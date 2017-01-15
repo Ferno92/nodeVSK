@@ -1,43 +1,62 @@
 $(document).ready(function() {
     initGameViewModel();
+    initServerGamesViewModel();
+    if (!gameId) {
+        $("#homepage").show();
+    }
 })
 var gameViewModel;
-var socket = io('http://192.168.1.106');
-// socket.on('news', function (data) {
-//   console.log("client ", data);
-//   socket.emit('my other event', { my: 'data' });
-// });
+var serverGamesViewModel;
+var socket = io('http://192.168.1.110');
+var gameId = getGameId();
+console.log("gameID: ", gameId);
+
+function getGameId() {
+    return getQueryVariable("game");
+}
+
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split("&");
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] == variable) {
+            return pair[1];
+        }
+    }
+    return (false);
+}
+
 socket.on('connect', function() {
-    socket.on('first connection', function(data) {
+    if (!gameId) {
+        // default page
+
+    } else {
+        socket.emit("asking data", gameId);
+    }
+
+    socket.on('first-connection-' + gameId, function(data) {
         console.log("client saved data ", data);
-        gameViewModel.model.nameA(data.nameA);
-        gameViewModel.model.nameB(data.nameB);
-        gameViewModel.model.scoreA(data.scoreA);
-        gameViewModel.model.scoreB(data.scoreB);
-        gameViewModel.model.setScoreA(data.setScoreA);
-        gameViewModel.model.setScoreB(data.setScoreB);
-        gameViewModel.model.setResults(data.setResults);
-        gameViewModel.model.lineUpA(data.lineUpA);
-        gameViewModel.model.lineUpB(data.lineUpB);
-        gameViewModel.model.positions(data.positions);
-        gameViewModel.utils.initMap();
-        gameViewModel.utils.afterSync();
+        if (data !== null) {
+            gameViewModel.model.nameA(data.nameA);
+            gameViewModel.model.nameB(data.nameB);
+            gameViewModel.model.scoreA(data.scoreA);
+            gameViewModel.model.scoreB(data.scoreB);
+            gameViewModel.model.setScoreA(data.setScoreA);
+            gameViewModel.model.setScoreB(data.setScoreB);
+            gameViewModel.model.setResults(data.setResults);
+            gameViewModel.model.lineUpA(data.lineUpA);
+            gameViewModel.model.lineUpB(data.lineUpB);
+            gameViewModel.model.positions(data.positions);
+            gameViewModel.utils.initMap();
+            gameViewModel.utils.afterSync();
+            $("#gameFound").show();
+            resizeCourt();
+        } else {
+            $("#gameNotFound").show();
+        }
     });
-    socket.on('news', function(data) {
-        console.log("client ", data);
-        gameViewModel.model.nameA(data.nameA);
-        gameViewModel.model.nameB(data.nameB);
-        gameViewModel.model.scoreA(data.scoreA);
-        gameViewModel.model.scoreB(data.scoreB);
-        gameViewModel.model.setScoreA(data.setScoreA);
-        gameViewModel.model.setScoreB(data.setScoreB);
-        gameViewModel.model.setResults(data.setResults);
-        gameViewModel.model.lineUpA(data.lineUpA);
-        gameViewModel.model.lineUpB(data.lineUpB);
-        gameViewModel.model.positions(data.positions);
-        gameViewModel.utils.initMap();
-    });
-    socket.on("syncGame", function(data) {
+    socket.on("syncGame-" + gameId, function(data) {
         console.log("syncGame ", data);
         gameViewModel.model.scoreA(data.scoreA);
         gameViewModel.model.scoreB(data.scoreB);
@@ -49,6 +68,14 @@ socket.on('connect', function() {
         gameViewModel.model.positions(data.positions);
         gameViewModel.utils.afterSync();
     });
+
+    socket.on("gamesList", function(data) {
+        serverGamesViewModel.model.openGames.removeAll();
+        serverGamesViewModel.model.openGames.push.apply(serverGamesViewModel.model.openGames, data.open);
+        serverGamesViewModel.model.endedGames.removeAll();
+        serverGamesViewModel.model.endedGames.push.apply(serverGamesViewModel.model.endedGames, data.ended);
+        console.log(serverGamesViewModel.model.endedGames());
+    })
 });
 
 function GameViewModelDefinition() {
@@ -98,10 +125,24 @@ function GameViewModelDefinition() {
     }
 }
 
+function ServerGamesViewModelDefinition() {
+    var self = this;
+
+    self.model = {
+        openGames: ko.observableArray([]),
+        endedGames: ko.observableArray([])
+    }
+}
+
 function initGameViewModel() {
     gameViewModel = new GameViewModelDefinition();
-    resizeCourt();
     ko.applyBindings(gameViewModel, $("#gameContainer")[0]);
+}
+
+function initServerGamesViewModel() {
+    serverGamesViewModel = new ServerGamesViewModelDefinition();
+    ko.applyBindings(serverGamesViewModel, $("#navbarWrapper")[0]);
+
 }
 
 function resizeCourt() {
