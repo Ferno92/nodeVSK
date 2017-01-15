@@ -10,7 +10,7 @@ app.get('/', function(req, res, next) {
     res.sendFile(__dirname + '/index.html');
 });
 
-server.listen(process.env.PORT || 5000);
+server.listen(process.env.PORT || 80);
 
 io.on('connection', function(socket) {
     socket.on('new game', function(data) {
