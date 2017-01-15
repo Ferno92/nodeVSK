@@ -7,7 +7,8 @@ $(document).ready(function() {
 })
 var gameViewModel;
 var serverGamesViewModel;
-var socket = io('http://192.168.1.110');
+// var socket = io('http://192.168.1.110');
+var socket = io('https://vsknodeserver.herokuapp.com/');
 var gameId = getGameId();
 console.log("gameID: ", gameId);
 
