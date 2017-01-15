@@ -18,7 +18,7 @@ io.on('connection', function(socket) {
         io.sockets.emit("gameId", id);
         data.id = id;
         gameData.push(data);
-        console.log("server from mobile", data);
+        // console.log("server from mobile", data);
         io.sockets.emit('pairing game', data);
         // io.sockets.emit('news', data);
     });
@@ -34,11 +34,11 @@ io.on('connection', function(socket) {
     });
     socket.on("asking data", function(id) {
         var found = false;
-        console.log("asking data with id: ", id);
+        // console.log("asking data with id: ", id);
         for (i = 0; i < gameData.length; i++) {
             if (id === gameData[i].id) {
                 found = true;
-                console.log("first-connection-" + id);
+                // console.log("first-connection-" + id);
                 io.sockets.emit("first-connection-" + id, gameData[i]);
             }
         }

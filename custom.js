@@ -10,7 +10,7 @@ var serverGamesViewModel;
 // var socket = io('http://192.168.1.110');
 var socket = io('https://vsknodeserver.herokuapp.com/');
 var gameId = getGameId();
-console.log("gameID: ", gameId);
+// console.log("gameID: ", gameId);
 
 function getGameId() {
     return getQueryVariable("game");
@@ -37,7 +37,7 @@ socket.on('connect', function() {
     }
 
     socket.on('first-connection-' + gameId, function(data) {
-        console.log("client saved data ", data);
+        // console.log("client saved data ", data);
         if (data !== null) {
             gameViewModel.model.nameA(data.nameA);
             gameViewModel.model.nameB(data.nameB);
@@ -58,7 +58,7 @@ socket.on('connect', function() {
         }
     });
     socket.on("syncGame-" + gameId, function(data) {
-        console.log("syncGame ", data);
+        // console.log("syncGame ", data);
         gameViewModel.model.scoreA(data.scoreA);
         gameViewModel.model.scoreB(data.scoreB);
         gameViewModel.model.setScoreA(data.setScoreA);
@@ -75,7 +75,7 @@ socket.on('connect', function() {
         serverGamesViewModel.model.openGames.push.apply(serverGamesViewModel.model.openGames, data.open);
         serverGamesViewModel.model.endedGames.removeAll();
         serverGamesViewModel.model.endedGames.push.apply(serverGamesViewModel.model.endedGames, data.ended);
-        console.log(serverGamesViewModel.model.endedGames());
+        // console.log(serverGamesViewModel.model.endedGames());
     })
 });
 
